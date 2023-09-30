@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Maps Playground</string>
+    <string name="permission_rational">We will need your location to give you better experience</string>
+    <string name="allow_your_location">Allow Your Location</string>
+    <string name="continue_txt">Continue</string>
+    <string name="playground">Playground</string>
+    <string name="tracker">Tracker</string>
+    <string name="maps_playground">Maps Playground</string>
+</resources>

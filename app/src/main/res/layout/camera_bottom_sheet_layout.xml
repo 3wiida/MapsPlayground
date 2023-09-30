@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="16dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/sf_pro_display_medium"
+        android:text="Zoom Level (1~20)"
+        android:textSize="18sp" />
+
+    <com.google.android.material.slider.RangeSlider
+        android:id="@+id/zoomSlider"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:stepSize="1.0"
+        android:valueFrom="0.0"
+        android:valueTo="20.0"
+        app:values="@array/initial_slider_values" />
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="10dp"
+                android:text="Show Buildings" />
+
+            <Switch
+                android:id="@+id/showBuildingSwitch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:ignore="UseSwitchCompatOrMaterialXml" />
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/moveCameraBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:text="Move camera to Texas"
+            android:background="@drawable/app_button_background"/>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/animateCameraBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:text="Animate camera to Cairo"
+            android:background="@drawable/app_button_background"/>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/moveCameraWithBoundsBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:text="Move camera to New York boundaries"
+            android:background="@drawable/app_button_background"/>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/moveCameraWithBoundsAndRestrictBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:text="Move camera to Florida &amp; restrict scroll"
+            android:background="@drawable/app_button_background"/>
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+</layout>

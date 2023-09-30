@@ -1,0 +1,19 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Base.Theme.MapsPlayground" parent="Theme.Material3.Light.NoActionBar">
+        <item name="android:statusBarColor">@color/white</item>
+    </style>
+
+    <style name="Theme.MapsPlayground" parent="Base.Theme.MapsPlayground" />
+
+    <style name="Theme.AppSplashScreen" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@color/white</item>
+        <item name="windowSplashScreenAnimatedIcon">@mipmap/ic_launcher</item>
+        <item name="postSplashScreenTheme">@style/Theme.MapsPlayground</item>
+    </style>
+
+    <style name="round_image_24">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">24dp</item>
+    </style>
+</resources>

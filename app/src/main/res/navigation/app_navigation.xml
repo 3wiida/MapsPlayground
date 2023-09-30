@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/app_navigation"
+    app:startDestination="@id/homeFragment">
+
+    <fragment
+        android:id="@+id/permissionFragment"
+        android:name="com.mahmoudibrahem.mapsplayground.ui.permission_screen.PermissionFragment"
+        android:label="PermissionFragment" >
+        <argument
+            android:name="direction"
+            app:argType="com.mahmoudibrahem.mapsplayground.util.Enums$HomeTo" />
+        <action
+            android:id="@+id/action_permissionFragment_to_playgroundFragment"
+            app:destination="@id/playgroundFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.mahmoudibrahem.mapsplayground.ui.home.HomeFragment"
+        android:label="HomeFragment" >
+        <action
+            android:id="@+id/action_homeFragment_to_permissionFragment"
+            app:destination="@id/permissionFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_playgroundFragment"
+            app:destination="@id/playgroundFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/playgroundFragment"
+        android:name="com.mahmoudibrahem.mapsplayground.ui.playground.PlaygroundFragment"
+        android:label="PlaygroundFragment" />
+</navigation>
