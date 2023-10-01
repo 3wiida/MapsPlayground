@@ -6,4 +6,10 @@
     <string name="playground">Playground</string>
     <string name="tracker">Tracker</string>
     <string name="maps_playground">Maps Playground</string>
+    <string name="country_name">Country Name : %1$s</string>
+    <string name="country_code">Country Code : %1$s</string>
+    <string name="postal_code">Postal Code : %1$s</string>
+    <string name="admin_area">Admin Area : %1$s</string>
+    <string name="latitude">Latitude : %1$s</string>
+    <string name="longitude">Longitude : %1$s</string>
 </resources>

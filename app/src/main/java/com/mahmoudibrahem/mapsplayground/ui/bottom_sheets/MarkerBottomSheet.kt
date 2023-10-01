@@ -1,4 +1,4 @@
-package com.mahmoudibrahem.mapsplayground.ui.playground.bottom_sheets
+package com.mahmoudibrahem.mapsplayground.ui.bottom_sheets
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -15,6 +15,8 @@ class MarkerBottomSheet : BottomSheetDialogFragment() {
     var onAddVectorMarkerBtnClicked: (() -> Unit)? = null
     var onAddBitmapMarkerClicked: (() -> Unit)? = null
     var onRemoveMarkersBtnClicked: (() -> Unit)? = null
+    var onEnableMarkerDragSwitch: ((Boolean) -> Unit)? = null
+    var onEnableCustomInfoWindowSwitch: ((Boolean) -> Unit)? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -42,6 +44,12 @@ class MarkerBottomSheet : BottomSheetDialogFragment() {
         binding?.removeMarkersBtn?.setOnClickListener {
             onRemoveMarkersBtnClicked?.invoke()
             this.dismiss()
+        }
+        binding?.enableMarkerDragSwitch?.setOnCheckedChangeListener { _, isChecked ->
+            onEnableMarkerDragSwitch?.invoke(isChecked)
+        }
+        binding?.enableCustomInfoSwitch?.setOnCheckedChangeListener { _, isChecked ->
+            onEnableCustomInfoWindowSwitch?.invoke(isChecked)
         }
     }
 

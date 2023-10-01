@@ -1,0 +1,30 @@
+package com.mahmoudibrahem.mapsplayground.util
+
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.LatLngBounds
+
+val texasLatLng = LatLng(31.511301916399816, -99.19507048791485)
+val nycLatLng = LatLng(40.71783982809633, -74.01956722190161)
+val floridaLatLng = LatLng(27.72791982055598, -81.7161000506038)
+val cairoLatLng = LatLng(30.035093642701582, 31.235114084065927)
+val nycBounds = LatLngBounds(
+    LatLng(40.507792278844086, -74.26727414428862),
+    LatLng(40.912648868040556, -73.60921191097013)
+)
+val floridaBounds = LatLngBounds(
+    LatLng(25.210546407531524, -87.64871718091898),
+    LatLng(30.850966090042842, -80.74930318492281)
+)
+
+val usPolygon= listOf(
+    LatLng(48.86664329749501, -124.48079837992219),
+    LatLng(49.25828797192844, -59.585499586282864),
+    LatLng(31.84388531788486, -69.66134860950581),
+    LatLng(33.14023715477602, -123.11458156321399)
+)
+
+val usHole = listOf(
+    LatLng(45.32248457869712, -114.06339515252219),
+    LatLng(43.18219099322165, -93.22858869772219),
+    LatLng(35.952950223639725, -102.87749496572384)
+)

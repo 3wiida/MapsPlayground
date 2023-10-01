@@ -1,5 +1,6 @@
-package com.mahmoudibrahem.mapsplayground.ui.playground.adapters
+package com.mahmoudibrahem.mapsplayground.ui.adapters
 
+import android.app.ActionBar
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -29,6 +30,12 @@ class MapTypeAdapter : ListAdapter<MapTypeItem, MapTypeAdapter.ItemViewHOlder>(C
         val item = getItem(position)
         holder.bind(item)
         holder.itemView.setOnClickListener { onSelectedItemChanged?.invoke(item) }
+        val params = ActionBar.LayoutParams(
+            ActionBar.LayoutParams.WRAP_CONTENT,
+            ActionBar.LayoutParams.WRAP_CONTENT
+        )
+        params.setMargins(0, 0, 10, 0)
+        holder.itemView.layoutParams = params
     }
 
     private object Comparator : DiffUtil.ItemCallback<MapTypeItem>() {

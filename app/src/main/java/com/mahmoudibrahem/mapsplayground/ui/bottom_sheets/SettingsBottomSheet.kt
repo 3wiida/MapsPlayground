@@ -1,4 +1,4 @@
-package com.mahmoudibrahem.mapsplayground.ui.playground.bottom_sheets
+package com.mahmoudibrahem.mapsplayground.ui.bottom_sheets
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,8 +9,8 @@ import com.mahmoudibrahem.mapsplayground.R
 import com.mahmoudibrahem.mapsplayground.databinding.SettingsBottomSheetLayoutBinding
 import com.mahmoudibrahem.mapsplayground.model.MapStyleItem
 import com.mahmoudibrahem.mapsplayground.model.MapTypeItem
-import com.mahmoudibrahem.mapsplayground.ui.playground.adapters.MapStyleAdapter
-import com.mahmoudibrahem.mapsplayground.ui.playground.adapters.MapTypeAdapter
+import com.mahmoudibrahem.mapsplayground.ui.adapters.MapStyleAdapter
+import com.mahmoudibrahem.mapsplayground.ui.adapters.MapTypeAdapter
 
 class SettingsBottomSheet : BottomSheetDialogFragment() {
 
@@ -19,10 +19,18 @@ class SettingsBottomSheet : BottomSheetDialogFragment() {
     private var mapStyleAdapter: MapStyleAdapter? = null
     private var mapTypeSelectedId = 1
     private var mapStyleSelectedId = 1
+    private var isZoomControlEnabled = false
+    private var isZoomGestureEnabled = true
+    private var isScrollGestureEnabled = true
+    private var isRotateGestureEnabled = true
+    private var isCompassEnabled = true
+    private var isToolbarEnabled = true
 
     var onZoomControlSwitch: ((Boolean) -> Unit)? = null
     var onZoomGestureSwitch: ((Boolean) -> Unit)? = null
     var onScrollGestureSwitch: ((Boolean) -> Unit)? = null
+    var onCompassSwitch: ((Boolean) -> Unit)? = null
+    var onToolbarSwitch: ((Boolean) -> Unit)? = null
     var onRotateGestureSwitch: ((Boolean) -> Unit)? = null
     var onMapTypeChanged: ((MapTypeItem) -> Unit)? = null
     var onMapStyleChanged: ((MapStyleItem) -> Unit)? = null
@@ -33,9 +41,19 @@ class SettingsBottomSheet : BottomSheetDialogFragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = SettingsBottomSheetLayoutBinding.inflate(inflater, container, false)
+        initView()
         initRecyclers()
         initClicks()
         return binding?.root
+    }
+
+    private fun initView() {
+        binding?.zoomControlSwitch?.isChecked = isZoomControlEnabled
+        binding?.zoomGesturesSwitch?.isChecked = isZoomGestureEnabled
+        binding?.scrollGesturesSwitch?.isChecked = isScrollGestureEnabled
+        binding?.rotateGesturesSwitch?.isChecked = isRotateGestureEnabled
+        binding?.compassSwitch?.isChecked = isCompassEnabled
+        binding?.toolbarSwitch?.isChecked = isToolbarEnabled
     }
 
     private fun initRecyclers() {
@@ -50,28 +68,35 @@ class SettingsBottomSheet : BottomSheetDialogFragment() {
 
     private fun initClicks() {
         binding?.zoomControlSwitch?.setOnCheckedChangeListener { _, isChecked ->
-            onZoomControlSwitch?.invoke(
-                isChecked
-            )
+            onZoomControlSwitch?.invoke(isChecked)
+            isZoomControlEnabled = isChecked
         }
 
         binding?.zoomGesturesSwitch?.setOnCheckedChangeListener { _, isChecked ->
-            onZoomGestureSwitch?.invoke(
-                isChecked
-            )
+            onZoomGestureSwitch?.invoke(isChecked)
+            isScrollGestureEnabled = isChecked
         }
 
         binding?.scrollGesturesSwitch?.setOnCheckedChangeListener { _, isChecked ->
-            onScrollGestureSwitch?.invoke(
-                isChecked
-            )
+            onScrollGestureSwitch?.invoke(isChecked)
+            isScrollGestureEnabled = isChecked
         }
 
         binding?.rotateGesturesSwitch?.setOnCheckedChangeListener { _, isChecked ->
-            onRotateGestureSwitch?.invoke(
-                isChecked
-            )
+            onRotateGestureSwitch?.invoke(isChecked)
+            isRotateGestureEnabled = isChecked
         }
+
+        binding?.compassSwitch?.setOnCheckedChangeListener { _, isChecked ->
+            onCompassSwitch?.invoke(isChecked)
+            isCompassEnabled = isChecked
+        }
+
+        binding?.toolbarSwitch?.setOnCheckedChangeListener { _, isChecked ->
+            onToolbarSwitch?.invoke(isChecked)
+            isToolbarEnabled = isChecked
+        }
+
 
         mapTypeAdapter?.onSelectedItemChanged = { item ->
             onMapTypeChanged?.invoke(item)

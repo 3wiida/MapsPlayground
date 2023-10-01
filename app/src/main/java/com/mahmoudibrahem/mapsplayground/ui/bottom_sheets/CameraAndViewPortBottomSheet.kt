@@ -1,4 +1,4 @@
-package com.mahmoudibrahem.mapsplayground.ui.playground.bottom_sheets
+package com.mahmoudibrahem.mapsplayground.ui.bottom_sheets
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -17,7 +17,7 @@ class CameraAndViewPortBottomSheet : BottomSheetDialogFragment() {
     var onMoveCameraWithBoundariesBtnClicked: (() -> Unit)? = null
     var onMoveCameraWithRestrictBtnClicked: (() -> Unit)? = null
     var onSlideZoomSlider: ((List<Float>) -> Unit)? = null
-    var isShowBuildingsEnabled = false
+    private var isShowBuildingsEnabled = false
 
     override fun onCreateView(
         inflater: LayoutInflater,

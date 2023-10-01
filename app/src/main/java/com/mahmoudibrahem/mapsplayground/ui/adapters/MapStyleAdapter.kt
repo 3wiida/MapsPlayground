@@ -1,5 +1,10 @@
-package com.mahmoudibrahem.mapsplayground.ui.playground.adapters
+package com.mahmoudibrahem.mapsplayground.ui.adapters
 
+import android.R.attr.bottom
+import android.R.attr.left
+import android.R.attr.right
+import android.R.attr.top
+import android.app.ActionBar
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -7,6 +12,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.mahmoudibrahem.mapsplayground.databinding.MapStyleItemLayoutBinding
 import com.mahmoudibrahem.mapsplayground.model.MapStyleItem
+
 
 class MapStyleAdapter : ListAdapter<MapStyleItem, MapStyleAdapter.ItemViewHOlder>(Comparator) {
 
@@ -29,6 +35,12 @@ class MapStyleAdapter : ListAdapter<MapStyleItem, MapStyleAdapter.ItemViewHOlder
         val item = getItem(position)
         holder.bind(item)
         holder.itemView.setOnClickListener { onSelectedItemChanged?.invoke(item) }
+        val params = ActionBar.LayoutParams(
+            ActionBar.LayoutParams.WRAP_CONTENT,
+            ActionBar.LayoutParams.WRAP_CONTENT
+        )
+        params.setMargins(0, 0, 10, 0)
+        holder.itemView.layoutParams = params
     }
 
     private object Comparator : DiffUtil.ItemCallback<MapStyleItem>() {
