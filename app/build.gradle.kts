@@ -31,11 +31,11 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = "1.8"
+        jvmTarget = "17"
     }
     buildFeatures {
         dataBinding {
@@ -57,10 +57,11 @@ dependencies {
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
 
     // Dagger - Hilt
-    implementation("com.google.dagger:hilt-android:2.45")
-    implementation("androidx.hilt:hilt-navigation-compose:1.1.0-alpha01")
-    kapt("com.google.dagger:hilt-android-compiler:2.45")
+    implementation ("com.google.dagger:hilt-android:2.44")
+    kapt("com.google.dagger:hilt-android-compiler:2.44")
     kapt("androidx.hilt:hilt-compiler:1.0.0")
+    implementation("androidx.hilt:hilt-navigation-fragment:1.0.0")
+    kapt("org.jetbrains.kotlinx:kotlinx-metadata-jvm:0.5.0")
 
     //Splash API
     implementation("androidx.core:core-splashscreen:1.0.1")
@@ -68,4 +69,15 @@ dependencies {
     //Easy Permissions
     implementation("pub.devrel:easypermissions:3.0.0")
 
+    //Fused Location Provider
+    implementation("com.google.android.gms:play-services-location:21.0.1")
+
+}
+
+hilt {
+    enableAggregatingTask = true
+}
+
+kapt {
+    generateStubs = true
 }

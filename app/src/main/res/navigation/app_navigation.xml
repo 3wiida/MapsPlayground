@@ -14,6 +14,9 @@
         <action
             android:id="@+id/action_permissionFragment_to_playgroundFragment"
             app:destination="@id/playgroundFragment" />
+        <action
+            android:id="@+id/action_permissionFragment_to_trackerFragment"
+            app:destination="@id/trackerFragment" />
     </fragment>
     <fragment
         android:id="@+id/homeFragment"
@@ -25,9 +28,16 @@
         <action
             android:id="@+id/action_homeFragment_to_playgroundFragment"
             app:destination="@id/playgroundFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_trackerFragment"
+            app:destination="@id/trackerFragment" />
     </fragment>
     <fragment
         android:id="@+id/playgroundFragment"
         android:name="com.mahmoudibrahem.mapsplayground.ui.playground.PlaygroundFragment"
         android:label="PlaygroundFragment" />
+    <fragment
+        android:id="@+id/trackerFragment"
+        android:name="com.mahmoudibrahem.mapsplayground.ui.tracker.TrackerFragment"
+        android:label="TrackerFragment" />
 </navigation>

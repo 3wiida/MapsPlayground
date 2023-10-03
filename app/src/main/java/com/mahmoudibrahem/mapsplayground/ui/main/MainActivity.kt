@@ -5,7 +5,9 @@ import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.findNavController
 import com.mahmoudibrahem.mapsplayground.R
+import com.mahmoudibrahem.mapsplayground.util.Constants.PENDING_INTENT_ACTION
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -19,5 +21,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         installSplashScreen().setKeepOnScreenCondition { viewModel.isKeepSplash }
         setContentView(R.layout.activity_main)
+
     }
 }
