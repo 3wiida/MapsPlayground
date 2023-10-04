@@ -13,7 +13,10 @@ import com.google.android.gms.maps.model.ButtCap
 import com.google.android.gms.maps.model.JointType
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.LatLngBounds
+import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.gms.maps.model.PolylineOptions
+import com.google.maps.android.SphericalUtil
+import java.text.DecimalFormat
 
 object TrackerUtil {
 
@@ -22,7 +25,9 @@ object TrackerUtil {
         steps.forEach {
             bounds.include(it)
         }
-        map?.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds.build(), 100))
+        map?.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds.build(), 200))
+        map?.addMarker(MarkerOptions().position(steps.first()))
+        map?.addMarker(MarkerOptions().position(steps.last()))
     }
 
     fun drawTrackPolyLine(map: GoogleMap?, steps: List<LatLng>) {
@@ -43,18 +48,19 @@ object TrackerUtil {
         map?.uiSettings?.apply {
             this.isCompassEnabled = false
             this.isMapToolbarEnabled = false
-            this.isMyLocationButtonEnabled = true
         }
     }
 
     @SuppressLint("MissingPermission")
     fun animateToDeviceLocation(
         map: GoogleMap?,
-        locationProviderClient: FusedLocationProviderClient
+        locationProviderClient: FusedLocationProviderClient,
+        onSuccess: () -> Unit
     ) {
         locationProviderClient.lastLocation.addOnSuccessListener {
             val devicePosition = LatLng(it.latitude, it.longitude)
             map?.animateCamera(CameraUpdateFactory.newLatLngZoom(devicePosition, 17f))
+            onSuccess.invoke()
         }
     }
 
@@ -73,5 +79,11 @@ object TrackerUtil {
     private fun buildLocationRequest(): LocationRequest {
         return LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY, 1000L).build()
     }
+
+    fun calculateDistance(startPosition: LatLng, endPosition: LatLng): String {
+        val distanceInMeters = SphericalUtil.computeDistanceBetween(startPosition, endPosition)
+        return DecimalFormat("#.##").format(distanceInMeters / 1000)
+    }
+
 
 }

@@ -14,7 +14,6 @@ import com.mahmoudibrahem.mapsplayground.util.Enums
 import pub.devrel.easypermissions.AppSettingsDialog
 import pub.devrel.easypermissions.EasyPermissions
 
-
 class PermissionFragment : Fragment(), EasyPermissions.PermissionCallbacks {
 
     private var binding: PermissionFragmentLayoutBinding? = null
@@ -68,7 +67,9 @@ class PermissionFragment : Fragment(), EasyPermissions.PermissionCallbacks {
                 findNavController().navigate(R.id.action_permissionFragment_to_playgroundFragment)
             }
 
-            Enums.HomeTo.TRACKER -> {}
+            Enums.HomeTo.TRACKER -> {
+                findNavController().navigate(R.id.action_permissionFragment_to_trackerFragment)
+            }
         }
     }
 

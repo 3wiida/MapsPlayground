@@ -19,10 +19,6 @@ class HomeFragment : Fragment() {
     private var binding: HomeFragmentLayoutBinding? = null
     private val viewModel: HomeViewModel by viewModels()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -37,7 +33,6 @@ class HomeFragment : Fragment() {
         initClicks()
         if(requireActivity().intent.action== Constants.PENDING_INTENT_ACTION){
             findNavController().navigate(R.id.action_homeFragment_to_trackerFragment)
-            Log.d("````TAG````", "onCreateView: ${requireActivity().intent.action}")
         }
     }
 

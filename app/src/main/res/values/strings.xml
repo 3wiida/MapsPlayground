@@ -12,4 +12,10 @@
     <string name="admin_area">Admin Area : %1$s</string>
     <string name="latitude">Latitude : %1$s</string>
     <string name="longitude">Longitude : %1$s</string>
+    <string name="km">%1$s KM</string>
+    <string name="_0_00_km">0.00 KM</string>
+    <string name="min">%1$s min</string>
+    <string name="getting_device_location">Getting Device Location...</string>
+    <string name="start">Start</string>
+    <string name="getting_ready">Getting Ready...</string>
 </resources>

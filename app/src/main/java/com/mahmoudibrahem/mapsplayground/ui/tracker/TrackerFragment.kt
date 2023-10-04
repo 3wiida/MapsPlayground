@@ -1,5 +1,6 @@
 package com.mahmoudibrahem.mapsplayground.ui.tracker
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import androidx.fragment.app.Fragment
 import android.os.Bundle
@@ -8,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.GoogleMap
@@ -20,6 +22,7 @@ import com.mahmoudibrahem.mapsplayground.service.TrackingService
 import com.mahmoudibrahem.mapsplayground.util.Constants.TRACKING_SERVICE_ACTION_START
 import com.mahmoudibrahem.mapsplayground.util.Constants.TRACKING_SERVICE_ACTION_STOP
 import com.mahmoudibrahem.mapsplayground.util.tracker_util.TrackerUtil
+import kotlinx.coroutines.launch
 
 class TrackerFragment : Fragment(), OnMapReadyCallback {
 
@@ -36,6 +39,7 @@ class TrackerFragment : Fragment(), OnMapReadyCallback {
     ): View? {
         binding = FragmentTrackerBinding.inflate(inflater, container, false)
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireContext())
+        requireActivity().intent.action = null
         return binding?.root
     }
 
@@ -44,6 +48,7 @@ class TrackerFragment : Fragment(), OnMapReadyCallback {
         val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
         mapFragment?.getMapAsync(this)
         initClicks()
+        observeElapsedTime()
         if (TrackingService.isRunning) {
             binding?.countDownTv?.isVisible = false
             binding?.startBtn?.isVisible = false
@@ -52,7 +57,9 @@ class TrackerFragment : Fragment(), OnMapReadyCallback {
         }
     }
 
+    @SuppressLint("MissingPermission")
     override fun onMapReady(map: GoogleMap) {
+        map.isMyLocationEnabled = true
         this.map = map
         TrackerUtil.initTrackMap(this.map)
         observeLocationUpdates()
@@ -65,32 +72,36 @@ class TrackerFragment : Fragment(), OnMapReadyCallback {
                 if (it.isNotEmpty()) {
                     this.steps = it
                     TrackerUtil.drawTrackPolyLine(map = map, steps = it)
+                    if (it.isNotEmpty()) {
+                        val distance = TrackerUtil.calculateDistance(it.first(), it.last())
+                        binding?.distanceTv?.text = getString(R.string.km, distance)
+                    }
                 }
+            }
+        }
+    }
+
+    private fun observeElapsedTime() {
+        lifecycleScope.launch {
+            TrackingService.elapsedTime.observe(viewLifecycleOwner) {
+                binding?.elapsedTimeTv?.text = getString(R.string.min, it)
             }
         }
     }
 
     private fun initClicks() {
         binding?.startBtn?.setOnClickListener {
-            map?.clear()
-            binding?.countDownTv?.isVisible = true
-
-            viewModel.startCountDown(
-                onTick = {
-                    binding?.countDownTv?.text = it
-                },
-                onFinish = {
-                    binding?.countDownTv?.isVisible = false
-                    binding?.startBtn?.isVisible = false
-                    binding?.stopBtn?.isVisible = true
-                    binding?.resultSecion?.isVisible = true
-                    sendActionToService(TRACKING_SERVICE_ACTION_START)
-                }
-            )
+            binding?.startBtn?.text = getString(R.string.getting_ready)
             if (viewModel.hasLocationPermission(requireContext())) {
                 TrackerUtil.animateToDeviceLocation(
                     map = map,
-                    locationProviderClient = fusedLocationClient!!
+                    locationProviderClient = fusedLocationClient!!,
+                    onSuccess = {
+                        map?.clear()
+                        binding?.countDownTv?.isVisible = true
+                        binding?.distanceTv?.text = getString(R.string._0_00_km)
+                        startCountDown()
+                    }
                 )
             }
 
@@ -105,6 +116,22 @@ class TrackerFragment : Fragment(), OnMapReadyCallback {
                 steps = steps
             )
         }
+    }
+
+    private fun startCountDown() {
+        viewModel.startCountDown(
+            onTick = {
+                binding?.countDownTv?.text = it
+            },
+            onFinish = {
+                binding?.countDownTv?.isVisible = false
+                binding?.startBtn?.isVisible = false
+                binding?.stopBtn?.isVisible = true
+                binding?.resultSecion?.isVisible = true
+                binding?.startBtn?.text = getString(R.string.start)
+                sendActionToService(TRACKING_SERVICE_ACTION_START)
+            }
+        )
     }
 
     private fun sendActionToService(action: String) {

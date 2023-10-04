@@ -23,6 +23,8 @@ import com.mahmoudibrahem.mapsplayground.util.Constants.PENDING_INTENT_REQ_CODE
 import com.mahmoudibrahem.mapsplayground.util.Constants.TRACKING_SERVICE_ACTION_START
 import com.mahmoudibrahem.mapsplayground.util.Constants.TRACKING_SERVICE_ACTION_STOP
 import com.mahmoudibrahem.mapsplayground.util.tracker_util.TrackerUtil
+import java.util.Timer
+import java.util.TimerTask
 
 class TrackingService : LifecycleService() {
 
@@ -30,15 +32,18 @@ class TrackingService : LifecycleService() {
     private var locationCallback: LocationCallback? = null
     private var notificationManager: NotificationManager? = null
     private var notification: NotificationCompat.Builder? = null
+    private val timer = Timer()
 
     companion object {
         val steps = MutableLiveData<MutableList<LatLng>>()
+        val elapsedTime = MutableLiveData<String>()
         var isRunning = false
     }
 
     override fun onCreate() {
         super.onCreate()
         steps.postValue(mutableListOf())
+        elapsedTime.postValue("00:00")
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(applicationContext)
         locationCallback = object : LocationCallback() {
             override fun onLocationResult(result: LocationResult) {
@@ -49,6 +54,12 @@ class TrackingService : LifecycleService() {
                         add(lastLatLng)
                         steps.postValue(this)
                     }
+                    updateNotification(
+                        TrackerUtil.calculateDistance(
+                            steps.value!!.first(),
+                            steps.value!!.last()
+                        )
+                    )
                 }
             }
         }
@@ -61,6 +72,7 @@ class TrackingService : LifecycleService() {
                 steps.postValue(mutableListOf())
                 startForegroundService()
                 TrackerUtil.getLocationUpdates(fusedLocationClient!!, locationCallback!!)
+                startElapsedTime(0, 0)
             }
 
             TRACKING_SERVICE_ACTION_STOP -> {
@@ -70,6 +82,7 @@ class TrackingService : LifecycleService() {
                     NOTIFICATION_ID
                 )
                 isRunning = false
+                timer.cancel()
             }
 
             else -> {}
@@ -91,7 +104,7 @@ class TrackingService : LifecycleService() {
             val notificationChannel = NotificationChannel(
                 NOTIFICATION_CHANNEL_ID,
                 NOTIFICATION_CHANNEL_NAME,
-                NotificationManager.IMPORTANCE_HIGH
+                NotificationManager.IMPORTANCE_DEFAULT
             )
             notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
             notificationManager?.createNotificationChannel(notificationChannel)
@@ -105,6 +118,9 @@ class TrackingService : LifecycleService() {
         ).apply {
             setAutoCancel(false)
             setOngoing(true)
+            setSilent(true)
+            setContentTitle("Maps Playground")
+            setContentText("Traveled distance is 0 Km")
             setSmallIcon(R.drawable.notificaiton_icon)
             setContentIntent(
                 PendingIntent.getActivity(
@@ -121,6 +137,47 @@ class TrackingService : LifecycleService() {
                 )
             )
         }
+    }
+
+    private fun updateNotification(distance: String) {
+        notification?.apply {
+            setContentText("Traveled distance is $distance Km")
+        }
+        notificationManager?.notify(NOTIFICATION_ID, notification?.build())
+    }
+
+    private fun startElapsedTime(
+        min: Int,
+        sec: Int,
+    ) {
+        var minCounter = min
+        var secCounter = sec
+        var minResult: String
+        var secResult: String
+        timer.scheduleAtFixedRate(
+            object : TimerTask() {
+                override fun run() {
+                    secCounter += 1
+                    if (secCounter == 60) {
+                        minCounter += 1
+                        secCounter = 0
+                    }
+                    secResult = if (secCounter.toString().length < 2) {
+                        "0$secCounter"
+                    } else {
+                        "$secCounter"
+                    }
+                    minResult = if (minCounter.toString().length < 2) {
+                        "0$minCounter"
+                    } else {
+                        "$minCounter"
+                    }
+                    elapsedTime.postValue("$minResult:$secResult")
+                }
+            },
+            0,
+            1000
+        )
     }
 
 

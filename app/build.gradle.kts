@@ -72,12 +72,8 @@ dependencies {
     //Fused Location Provider
     implementation("com.google.android.gms:play-services-location:21.0.1")
 
+    //Maps Utility SDK
+    implementation("com.google.maps.android:android-maps-utils:3.5.3")
+
 }
 
-hilt {
-    enableAggregatingTask = true
-}
-
-kapt {
-    generateStubs = true
-}
