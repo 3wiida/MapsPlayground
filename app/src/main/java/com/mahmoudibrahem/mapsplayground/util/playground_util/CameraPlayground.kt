@@ -28,6 +28,7 @@ object CameraPlayground {
     }
 
     fun moveCamera(map: GoogleMap?, position: LatLng) {
+        map?.setLatLngBoundsForCameraTarget(null)
         map?.moveCamera(
             CameraUpdateFactory.newCameraPosition(
                 CameraPosition
@@ -44,6 +45,8 @@ object CameraPlayground {
     }
 
     fun animateCamera(map: GoogleMap?, position: LatLng) {
+        map?.setLatLngBoundsForCameraTarget(null)
+
         map?.animateCamera(
             CameraUpdateFactory.newCameraPosition(
                 CameraPosition
@@ -59,6 +62,7 @@ object CameraPlayground {
     }
 
     fun moveCameraToLatLngBounds(map: GoogleMap?, bounds: LatLngBounds, padding: Int) {
+        map?.setLatLngBoundsForCameraTarget(null)
         map?.animateCamera(
             CameraUpdateFactory.newLatLngBounds(bounds, padding)
         )
